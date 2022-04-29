@@ -4,12 +4,10 @@ export default class Chart {
   #data;
   #height;
   #element;
-  #columns;
 
   constructor(data, height) {
     this.#height = height;
     this.#data = this.createData(data);
-    this.#columns = this.getColumnNodes();
 
     this.#element = this.createElement();
   }
