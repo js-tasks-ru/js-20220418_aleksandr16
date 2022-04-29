@@ -2,6 +2,7 @@ import Title from "./components/title.js";
 import Header from "./components/header.js";
 import Chart from "./components/chart.js";
 import Container from "./components/container.js";
+import EventObserver from "./event-observer.js";
 
 export default class ColumnChart {
   static #HEIGHT = 50;
@@ -9,7 +10,7 @@ export default class ColumnChart {
   #chart
   #header
   #loading;
-
+  #dataObserver = new EventObserver();
   #element;
 
   constructor({ label, value, data, link, formatHeading } = {}) {
@@ -17,6 +18,8 @@ export default class ColumnChart {
     this.#header = new Header(value, formatHeading);
     this.#chart = new Chart(data ?? [], ColumnChart.#HEIGHT);
     this.#loading = !data?.length;
+
+    this.subscribeToDataUpdate();
 
     this.#element = this.createTemplate();
     this.updateLoading();
@@ -31,9 +34,7 @@ export default class ColumnChart {
   }
 
   update(data) {
-    this.#chart.update(data);
-    this.#loading = !data.length;
-    this.updateLoading();
+    this.#dataObserver.notify(data);
   }
 
   destroy() {
@@ -42,6 +43,7 @@ export default class ColumnChart {
     this.#title = null;
     this.#header = null;
     this.#element = null;
+    this.#dataObserver = null;
   }
 
   remove() {
@@ -68,5 +70,13 @@ export default class ColumnChart {
     } else {
       this.#element.classList.remove('column-chart_loading');
     }
+  }
+
+  subscribeToDataUpdate() {
+    this.#dataObserver.subscribe((data) => {
+      this.#chart.update(data);
+      this.#loading = !data.length;
+      this.updateLoading();
+    });
   }
 }
