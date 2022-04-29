@@ -1,7 +1,4 @@
-import Title from "./components/title.js";
-import Header from "./components/header.js";
-import Chart from "./components/chart.js";
-import Container from "./components/container.js";
+import { Title, Header, Chart, Container } from './components';
 import EventObserver from "./event-observer.js";
 
 export default class ColumnChart {
