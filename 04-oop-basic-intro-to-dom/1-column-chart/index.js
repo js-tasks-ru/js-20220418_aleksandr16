@@ -6,7 +6,6 @@ export default class ColumnChart {
   #title
   #chart
   #header
-  #loading;
   #dataObserver = new EventObserver();
   #element;
 
@@ -14,12 +13,11 @@ export default class ColumnChart {
     this.#title = new Title({ title: label, link });
     this.#header = new Header(value, formatHeading);
     this.#chart = new Chart(data ?? [], ColumnChart.#HEIGHT);
-    this.#loading = !data?.length;
 
     this.subscribeToDataUpdate();
 
     this.#element = this.createTemplate();
-    this.updateLoading();
+    this.updateLoading(!data?.length);
   }
 
   get element() {
@@ -61,8 +59,8 @@ export default class ColumnChart {
     return element;
   }
 
-  updateLoading() {
-    if (this.#loading) {
+  updateLoading(loading) {
+    if (loading) {
       this.#element.classList.add('column-chart_loading');
     } else {
       this.#element.classList.remove('column-chart_loading');
@@ -72,8 +70,7 @@ export default class ColumnChart {
   subscribeToDataUpdate() {
     this.#dataObserver.subscribe((data) => {
       this.#chart.update(data);
-      this.#loading = !data.length;
-      this.updateLoading();
+      this.updateLoading(!data?.length);
     });
   }
 }
