@@ -9,7 +9,7 @@ export default class Chart {
   constructor(data, height) {
     this.#height = height;
     this.#data = this.createData(data);
-    this.#columns = this.getColumns();
+    this.#columns = this.getColumnNodes();
 
     this.#element = this.createElement();
   }
@@ -21,7 +21,7 @@ export default class Chart {
   update(data) {
     this.#data = this.createData(data);
     this.#element.innerHTML = '';
-    this.#element.append(...this.getColumns());
+    this.#element.append(...this.getColumnNodes());
   }
 
   createElement() {
@@ -29,7 +29,7 @@ export default class Chart {
     chart.classList.add('column-chart__chart');
     chart.setAttribute('data-element', 'body');
 
-    chart.append(...this.getColumns());
+    chart.append(...this.getColumnNodes());
 
     return chart;
   }
@@ -47,7 +47,7 @@ export default class Chart {
     }));
   }
 
-  getColumns() {
+  getColumnNodes() {
     return this.#data.map(({ value, percent }) => {
       return new Column(value, percent).element;
     });
