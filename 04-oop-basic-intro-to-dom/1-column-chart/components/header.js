@@ -27,6 +27,10 @@ export default class Header {
       return '';
     }
 
-    return this.#formatter ? this.#formatter(this.#value) : this.#value;
+    if (!this.#formatter || typeof this.#formatter !== 'function') {
+      return this.#value;
+    }
+
+    return this.#formatter(this.#value);
   }
 }
