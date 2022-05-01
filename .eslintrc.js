@@ -61,5 +61,6 @@ module.exports = {
     'constructor-super': 'warn',
     'no-this-before-super': 'warn',
     'no-var': 'warn',
+    'class-private-methods': 'on'
   },
 };
