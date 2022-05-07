@@ -93,14 +93,18 @@ export default class SortableTable {
 
   setSortObservers() {
     this.#sortObserver.subscribe((sort = null) => {
-      this.#header.updateSort(this.#sort);
+      this.#header.updateSort(sort);
       this.#body.innerHTML = '';
       if (!sort) {
         this.#body.append(...this.createRows().map(row => row.element));
         return;
       }
 
-      const comparator = SortableTable.#comparators[this.#sort.type](sort.direction);
+      const comparator = this.getComparator();
+      if (!comparator) {
+        throw new Error('sort was not provided');
+      }
+
       const data = [...this.#data];
       data.sort((rowA, rowB) => comparator(rowA[sort.id], rowB[sort.id]));
 
@@ -115,6 +119,13 @@ export default class SortableTable {
       config[id] = rest;
       return config;
     }, {});
+  }
+
+  getComparator() {
+    if (!this.#sort) {
+      return;
+    }
+    return SortableTable.#comparators[this.#sort.type](this.#sort.direction);
   }
 
   validateConfig(headerConfig) {
