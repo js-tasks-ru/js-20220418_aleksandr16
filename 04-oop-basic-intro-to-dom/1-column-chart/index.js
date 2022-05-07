@@ -1,5 +1,5 @@
 import { Title, Header, Chart, Container } from './components';
-import EventObserver from "./event-observer.js";
+import EventObserver from "../../lib/event-observer.js";
 
 export default class ColumnChart {
   static #HEIGHT = 50;
