@@ -1,4 +1,7 @@
 class Tooltip {
+  static #DX = 20;
+  static #DY = 20;
+
   static #instance;
   element;
   #show;
@@ -98,8 +101,8 @@ class Tooltip {
       return;
     }
 
-    this.element.style.left = x + 20 + 'px';
-    this.element.style.top = y + 20 + 'px';
+    this.element.style.left = x + Tooltip.#DX + 'px';
+    this.element.style.top = y + Tooltip.#DY + 'px';
   }
 }
 
