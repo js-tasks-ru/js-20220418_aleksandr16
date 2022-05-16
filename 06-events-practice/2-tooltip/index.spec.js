@@ -31,7 +31,6 @@ describe('events-practice/tooltip', () => {
     });
 
     const container = document.getElementById('container');
-
     container.dispatchEvent(pointerover);
 
     expect(tooltip.element).toBeVisible();
