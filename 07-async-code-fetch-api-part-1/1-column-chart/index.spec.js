@@ -11,7 +11,8 @@ describe('async-code-fetch-api-part-1/column-chart', () => {
     columnChart = new ColumnChart({
       label: '',
       link: '',
-      value: 0
+      value: 0,
+      url: '/data'
     });
 
     document.body.append(columnChart.element);
