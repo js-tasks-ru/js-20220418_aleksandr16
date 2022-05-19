@@ -12,6 +12,6 @@ export default class DataLocalProvider {
    }
 
    async getData(filter = {}) {
-     return this.#data;
+     return Promise.resolve(this.#data);
    }
 }
