@@ -39,11 +39,11 @@ export default class Chart {
 
     const entries = Object.entries(data);
 
-    const max = Math.max(...entries.map(entry => Number(entry[1])));
+    const max = Math.max(...entries.map(([, value]) => Number(value)));
     const scale = this.#height / max;
-    return entries.map((entry) => ({
-      value: String(Math.floor(entry[1] * scale)),
-      label: entry[0]
+    return entries.map(([label, value]) => ({
+      value: String(Math.floor(value * scale)),
+      label
     }));
   }
 
