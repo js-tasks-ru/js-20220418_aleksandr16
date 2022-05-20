@@ -7,17 +7,17 @@ export default class Chart {
 
   constructor(data, height) {
     this.#height = height;
-    this.#data = this.createData(data);
 
     this.#element = this.createElement();
+    this.update();
   }
 
   get element() {
     return this.#element;
   }
 
-  update(data) {
-    this.#data = this.createData(data);
+  update(data = null) {
+    this.#data = this.createData(data ?? this.#data);
     this.#element.innerHTML = '';
     this.#element.append(...this.getColumnNodes());
   }
@@ -26,8 +26,6 @@ export default class Chart {
     const chart = document.createElement('div');
     chart.classList.add('column-chart__chart');
     chart.setAttribute('data-element', 'body');
-
-    chart.append(...this.getColumnNodes());
 
     return chart;
   }
@@ -48,8 +46,9 @@ export default class Chart {
   }
 
   getColumnNodes() {
-    return this.#data.map(({ value, label: tooltip }) => {
-      return new Column(value, tooltip).element;
+    return this.#data.map(({ value, label }) => {
+      const { element } = new Column(value, label);
+      return element;
     });
   }
 }

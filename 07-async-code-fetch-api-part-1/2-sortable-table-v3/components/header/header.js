@@ -72,13 +72,10 @@ export default class Header {
 
   handleChangeSort(event) {
     const cell = event.target.closest('[data-id]');
-    const sortable = cell?.dataset.sortable;
+    const { id, order, sortable } = cell.dataset;
     if (!sortable || sortable === 'false') {
       return;
     }
-
-    const id = cell.dataset.id;
-    const order = cell.dataset.order;
 
     this.#onClick(id, !order || order === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC);
   }
