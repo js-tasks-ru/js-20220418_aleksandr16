@@ -11,7 +11,7 @@ export default class DataLocalProvider {
      return TableDataMode.REMOTE;
    }
 
-   async getData(filter = {}) {
+   async getData(_ = {}) {
      return Promise.resolve(this.#data);
    }
 }

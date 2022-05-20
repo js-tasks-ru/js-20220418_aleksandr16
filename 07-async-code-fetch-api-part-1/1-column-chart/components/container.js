@@ -18,8 +18,7 @@ export default class Container {
     const container = document.createElement('div');
     container.classList.add('column-chart__container');
 
-    container.append(this.#header.element);
-    container.append(this.#chart.element);
+    container.append(this.#header.element, this.#chart.element);
 
     return container;
   }

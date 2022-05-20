@@ -17,7 +17,7 @@ export default class Row {
     return this.#element;
   }
 
-  createCellsComponent(cells) {
+  createCells(cells) {
     return Object.keys(cells).map((id) => new Cell(cells[id]));
   }
 
@@ -27,7 +27,7 @@ export default class Row {
     element.setAttribute('href', this.#link);
     element.dataset.element = 'row';
 
-    const cells = this.createCellsComponent(this.#cells).map(cell => cell.element);
+    const cells = this.createCells(this.#cells).map(cell => cell.element);
 
     element.append(...cells);
 

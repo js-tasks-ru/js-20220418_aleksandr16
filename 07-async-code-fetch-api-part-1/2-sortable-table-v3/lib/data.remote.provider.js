@@ -1,5 +1,5 @@
 import fetchJson from "../utils/fetch-json.js";
-import {TableDataMode} from "../index.js";
+import SortableTable, {TableDataMode} from "../index.js";
 
 const BACKEND_URL = 'https://course-js.javascript.ru';
 
@@ -15,13 +15,15 @@ export default class DataRemoteProvider {
   }
 
   async getData(filter = {}) {
+    const { currentPage = 1, pageSize = SortableTable.PAGE_SIZE, sort } = filter;
+
     const params = {
       _embed: 'subcategory.category',
-      _start: String(filter.currentPage * filter.pageSize - filter.pageSize),
-      _end: String(filter.currentPage * filter.pageSize),
+      _start: String(currentPage * pageSize - pageSize),
+      _end: String(currentPage * pageSize),
     };
 
-    if (filter.sort?.id && filter.sort?.direction) {
+    if (sort?.id && sort?.direction) {
       params._sort = filter.sort.id;
       params._order = filter.sort.direction;
     }
