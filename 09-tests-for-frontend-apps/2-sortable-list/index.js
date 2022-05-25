@@ -121,7 +121,7 @@ export default class SortableList {
   }
 
   handleMouseUp(e) {
-    if (e.target.getAttribute('data-grab-handle') !== null) {
+    if (this.isDragging(e.target)) {
       this.placeItem();
       document.removeEventListener('pointermove', this.#pointerMoveHandler);
     }
@@ -183,6 +183,9 @@ export default class SortableList {
   }
 
   destroy() {
+    this.#currentItem = null;
+    this.#shiftX = 0;
+    this.#shiftY = 0;
     this.remove();
   }
 }
