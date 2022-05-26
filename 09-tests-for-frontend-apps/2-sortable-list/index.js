@@ -7,19 +7,25 @@ export default class SortableList {
   #pointerMoveHandler;
   #pointerUpHandler;
 
+  #onRemove;
+  #onResort;
+
   #placeholder;
 
   #currentItem;
   #shiftX;
   #shiftY;
 
-  constructor({ items = [] }) {
+  constructor({ items = [], onRemove = null, onResort = null }) {
     this.validateItems(items);
 
     this.#items = items;
     this.#pointerDownHandler = this.handlePointerDown.bind(this);
     this.#pointerMoveHandler = this.handleMouseMove.bind(this);
     this.#pointerUpHandler = this.handleMouseUp.bind(this);
+
+    this.#onRemove = onRemove;
+    this.#onResort = onResort;
 
     this.createElement();
     this.updateItems();
@@ -91,16 +97,16 @@ export default class SortableList {
 
     this.#element.append(this.#currentItem);
 
-    this.#currentItem.style.left = e.pageX - this.#shiftX + 'px';
-    this.#currentItem.style.top = e.pageY - this.#shiftY + 'px';
+    this.#currentItem.style.left = e.clientX - this.#shiftX + 'px';
+    this.#currentItem.style.top = e.clientY - this.#shiftY + 'px';
 
     document.addEventListener('pointermove', this.#pointerMoveHandler);
     document.addEventListener('pointerup', this.#pointerUpHandler);
   }
 
   handleMouseMove(e) {
-    this.#currentItem.style.left = e.pageX - this.#shiftX + 'px';
-    this.#currentItem.style.top = e.pageY - this.#shiftY + 'px';
+    this.#currentItem.style.left = e.clientX - this.#shiftX + 'px';
+    this.#currentItem.style.top = e.clientY - this.#shiftY + 'px';
 
     if (this.isRemoving(e.target)) {
       return;
@@ -150,17 +156,24 @@ export default class SortableList {
     this.#placeholder = null;
     this.#currentItem.classList.remove('sortable-list__item_dragging');
     this.#currentItem.removeAttribute('style');
+
+    this.onResort();
   }
 
   removeItem() {
-    if (this.#currentItem) {
-      this.#currentItem.remove();
-      this.#currentItem = null;
-    }
-
     if (this.#placeholder) {
       this.#placeholder.remove();
       this.#placeholder = null;
+    }
+
+    if (this.#currentItem) {
+      if (this.#onRemove) {
+        this.#onRemove(this.#currentItem.querySelector('input[name="url"]')?.value);
+      } else {
+        this.#currentItem.remove();
+      }
+
+      this.#currentItem = null;
     }
   }
 
@@ -187,5 +200,12 @@ export default class SortableList {
     this.#shiftX = 0;
     this.#shiftY = 0;
     this.remove();
+  }
+
+  onResort() {
+    this.#items = this.#element.querySelectorAll('li');
+    if (this.#onResort) {
+      this.#onResort(this.#items);
+    }
   }
 }
