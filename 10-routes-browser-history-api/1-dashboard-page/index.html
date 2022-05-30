@@ -60,7 +60,9 @@
   const contentNode = document.querySelector('#content');
 
   async function initialize () {
-    const page = new Page();
+    const dateMonthAgo = new Date();
+    dateMonthAgo.setMonth(dateMonthAgo.getMonth() - 1);
+    const page = new Page({ title: 'Dashboard', fromDate: dateMonthAgo, toDate: new Date() });
     const element = await page.render();
 
     contentNode.innerHTML = '';
